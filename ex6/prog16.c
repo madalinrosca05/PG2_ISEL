@@ -11,6 +11,7 @@
 
 int main(int argc, char *argv[]) {
 
+    // Verificação das entradas
     if (argc != 3) {
         fatal_error("Uso: ./prog16 <posicao_campo> <string_comparar>\n");
     }
@@ -20,23 +21,28 @@ int main(int argc, char *argv[]) {
         fatal_error("Erro: A posição do campo deve ser >= 1.\n");
     }
  
+    // Preparar o segundo argumento para comparação, garantindo que ele seja uniformizado desde o início
     char str_procurada[MAX_LINE_SIZE];
     strncpy(str_procurada, argv[2], MAX_LINE_SIZE - 1);
     str_procurada[MAX_LINE_SIZE - 1] = '\0';
-    separatorUnify(str_procurada); 
+    separatorUnify(str_procurada); // Uniformizar a string de comparação para garantir consistência
 
     char linha[MAX_LINE_SIZE];
     char linha_copia[MAX_LINE_SIZE];
     char *fields[MAX_FIELDS];
 
+    // Ler cada linha da entrada padrão
     while (fgets(linha, MAX_LINE_SIZE, stdin) != NULL) { 
+        // Criar uma cópia da linha porque o splitFields modifica a string original
         strcpy(linha_copia, linha);
         int n_campos = splitFields(linha_copia, fields, MAX_FIELDS);
 
+        // Verificar se a linha atual tem campos suficientes para a posição pretendida
         if (pos_campo <= n_campos) {
-            char *campo_alvo = fields[pos_campo - 1]; 
-            separatorUnify(campo_alvo);
+            char *campo_alvo = fields[pos_campo - 1]; // Escolher o campo alvo com base na posição fornecida
+            separatorUnify(campo_alvo); // Uniformizar o campo extraído para a comparação
 
+            // Comparação usando a função do Exercício 5
             if (strcmp_ic(campo_alvo, str_procurada) == 0) {
                 printf("%s", linha);
             }
