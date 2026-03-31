@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include "calcParity.h"
 
+// Programa para calcular a paridade de um número inteiro usando a função calcParity
+
 int main(){
     unsigned int num;
     int paridade;

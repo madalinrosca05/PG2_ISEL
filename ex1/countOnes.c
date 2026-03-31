@@ -1,6 +1,11 @@
 #include <stdio.h>
 #include <limits.h>
 
+/*
+    countOnes: Conta o número de bits 1 em um valor unsigned.
+    Se high não for NULL, armazena a posição do bit mais significativo 1 encontrado.
+*/
+
 static int INT_SIZE = sizeof(unsigned int) * CHAR_BIT;
 
 int countOnes(unsigned value, int *high){

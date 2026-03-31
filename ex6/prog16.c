@@ -6,7 +6,7 @@
 #include "separator_unify.h"
 #include "strcmp_ic.h"
 
-#define MAX_LINE_SIZE 256 // 255 carateres úteis + '\0'
+#define MAX_LINE_SIZE 256 
 #define MAX_FIELDS 50
 
 int main(int argc, char *argv[]) {

@@ -1,4 +1,3 @@
-
 #ifndef SEPARATOR_UNIFY_H
 #define SEPARATOR_UNIFY_H
 

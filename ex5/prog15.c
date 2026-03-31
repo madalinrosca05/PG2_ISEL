@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include "strcmp_ic.h"
 
-#define MAX_WORD 255 // Número máximo de caracteres úteis de cada linha segundo o enunciado no ex3
+#define MAX_WORD 255
 
 /* 
-    O programa compara uma palavra fornecida como argumento da linha de comandos com palavras lidas do stdin 
-    usando a função strcmp_ic para comparação case-insensitive. 
+    O programa compara uma palavra fornecida como argumento da linha de comandos com 
+    palavras lidas do stdin usando a função strcmp_ic para comparação case-insensitive. 
     Ele lê palavras do stdin até EOF (End Of File) ou erro de leitura, e para cada palavra lida 
     imprime o resultado da comparação com a palavra fornecida no argumento.
 */
