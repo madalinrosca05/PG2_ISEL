@@ -1,25 +1,15 @@
-
 #include "separator_unify.h"
 
-/*
- * Função: separatorUnify
- * ----------------------
- * Recebe uma string e uniformiza os separadores entre palavras:
- * - Substitui qualquer sequência de espaços, tabs ou newlines por um único espaço
- * - Remove separadores no início e no fim da string
- * - O processamento é feito na própria string (sem memória extra)
- */
 void separatorUnify(char str[]) {
-    
-    int i = 0, j = 0;
-    // i -> índice de leitura
-    // j -> índice de escrita
+    /*
+        "i" é a posição atual de leitura na string original, 
+        "j" é a posição de escrita na string modificada.
+        "inSpace" indica se estamos atualmente em uma sequência de separadores 
+        (espaços, tabs, novas linhas). 
+        Começa a 1 porque ignora espaços iniciais.
+    */ 
+    int i = 0, j = 0, inSpace = 1; 
 
-    int inSpace = 1;
-    // indica se estamos "dentro de separadores"
-    // começa a 1 para ignorar espaços iniciais
-
-    
     while (str[i] != '\0') {
 
         // verifica se o carácter atual é um separador
@@ -27,8 +17,8 @@ void separatorUnify(char str[]) {
 
             // só escreve um espaço se não estiver já em sequência de espaços
             if (!inSpace) {
-                str[j++] = ' ';   // escreve um único espaço
-                inSpace = 1;      // marca que agora está em espaço
+                str[j++] = ' ';
+                inSpace = 1; // indica que agora estamos em espaço
             }
 
         } else {
@@ -37,7 +27,7 @@ void separatorUnify(char str[]) {
             inSpace = 0;         // indica que já não estamos em espaço
         }
 
-        i++; // avança para o próximo carácter
+        i++;
     }
 
     // se o último carácter escrito for espaço, remove-o
@@ -45,6 +35,5 @@ void separatorUnify(char str[]) {
         j--;
     }
 
-    // termina a string corretamente
     str[j] = '\0';
 }
