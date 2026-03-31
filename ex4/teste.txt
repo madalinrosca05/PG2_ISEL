@@ -1,0 +1,4 @@
+primeiro;; terceiro	; ; palavras do quinto
+eu ; gosto   de   caramelo
+a;;b;;;c
+   ola    mundo   ;   teste   
