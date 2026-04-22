@@ -1,7 +1,7 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-// Dimensões baseadas na análise real de dados.csv
+// 3.1. Dimensões baseadas na análise real de dados.csv
 #define MAX_BOOKS     350   // Superior às 296 linhas (livros) contadas
 #define MAX_TITLE     256   // Superior aos 200 carateres do título mais longo
 #define SIZE_ISBN     20    // Superior aos 10 carateres
