@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <stdlib.h> 
+#include <string.h>
+#include "book.h"
+#include "splitFields.h"
+#include "separator_unify.h"
+#include "strcmp_ic.h"
+
+// Função auxiliar de comparação para qsort, comparando os títulos dos livros de forma case-insensitive
+static int compareBooksByTitle(const void *a, const void *b) {
+    const BookData *bookA = (const BookData *)a;
+    const BookData *bookB = (const BookData *)b;
+    return strcmp_ic(bookA->title, bookB->title);
+}
+
+// 4.1. Função para ordenar a coleção de livros por título
+void collSortTitle(Collection *col) {
+    if (col->count > 0) {
+        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
+    }
+}
+
+int fillBookData(BookData *b, const char *line) {
+    char line_copy[1024]; // Buffer suficiente para a linha completa
+    char *fields[10];     // O ficheiro tem 10 campos
+    
+    strncpy(line_copy, line, sizeof(line_copy) - 1);
+    line_copy[sizeof(line_copy) - 1] = '\0';
+
+    // Dividir a linha em campos utilizando a splitFields
+    int n = splitFields(line_copy, fields, 10);
+    if (n < 5) return 0; // Erro se não houver campos suficientes
+
+    // Copiar e uniformizar os campos relevantes (Título, ISBN, Autores, Editora)
+    separatorUnify(fields[0]);
+    strncpy(b->title, fields[0], MAX_TITLE - 1);
+    b->title[MAX_TITLE - 1] = '\0';
+
+    separatorUnify(fields[1]); 
+    strncpy(b->isbn, fields[1], SIZE_ISBN - 1); 
+    b->isbn[SIZE_ISBN - 1] = '\0';
+
+    separatorUnify(fields[3]);
+    strncpy(b->authors, fields[3], MAX_AUTHORS - 1);
+    b->authors[MAX_AUTHORS - 1] = '\0';
+
+    separatorUnify(fields[4]);
+    strncpy(b->publisher, fields[4], MAX_PUB_NAME - 1);
+    b->publisher[MAX_PUB_NAME - 1] = '\0';
+
+    return 1;
+}
+
+
+int collAddBook(const char *line, void *context) {
+    Collection *col = (Collection *)context;
+
+    // Verificar se há espaço na coleção
+    if (col->count >= MAX_BOOKS) return 0;
+
+    // Preencher os dados do livro e adicionar à coleção
+    if (fillBookData(&(col->books[col->count]), line)) {
+        col->count++;
+        return 1;
+    }
+
+    return 0;
+}

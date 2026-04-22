@@ -1,7 +1,8 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-// 3.1. Dimensões baseadas na análise de dados.csv
+#include "strcmp_ic.h"
+// Dimensões baseadas na análise de dados.csv
 #define MAX_BOOKS     350   // Superior às 296 linhas (livros) contadas
 #define MAX_TITLE     256   // Superior aos 200 carateres do título mais longo
 #define SIZE_ISBN     20    // Superior aos 10 carateres
@@ -21,6 +22,7 @@ typedef struct {
     int count; 
 } Collection;
 
+void collSortTitle (Collection *col);
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
 
