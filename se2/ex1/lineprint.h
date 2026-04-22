@@ -1,5 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-#include "errors.h"
+#ifndef LINEPRINT_H
+#define LINEPRINT_H
 
 int linePrintRaw( const char *line, void *context );
+
+#endif
