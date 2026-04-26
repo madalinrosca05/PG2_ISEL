@@ -68,8 +68,9 @@ int collAddBook(const char *line, void *context) {
 }
 
 //---------- adicionado no ex5
+
 // Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
-static int compareRefsByIsbn(const void *a, const void *b) {
+static int compareByIsbn(const void *a, const void *b) {
     // Como qsort passa ponteiros para os elementos do array, 
     // e o array contém (BookData *), 'a' e 'b' são (BookData **)
     const BookData *bookA = *(const BookData **)a;
@@ -89,5 +90,5 @@ void collSortRefIsbn(Collection *col) {
 
     // 2. Ordenar o array de ponteiros 'refs' por ISBN
     // Note que o tamanho de cada elemento é sizeof(BookData *)
-    qsort(col->refs, col->count, sizeof(BookData *), compareRefsByIsbn);
+    qsort(col->refs, col->count, sizeof(BookData *), compareByIsbn);
 }
