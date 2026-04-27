@@ -101,3 +101,22 @@ void collSortRefIsbn(Collection *col) {
     // Note que o tamanho de cada elemento é sizeof(BookData *)
     qsort(col->refs, col->count, sizeof(BookData *), compareByIsbn);
 }
+
+// Função de comparação para o bsearch
+// O primeiro argumento é a chave (string ISBN), o segundo é um elemento do array refs (BookData**)
+static int compareKeyWithIsbn(const void *key, const void *element) {
+    const char *isbnKey = (const char *)key;
+    const BookData *book = *(const BookData **)element;
+    return strcmp(isbnKey, book->isbn);
+}
+
+BookData* collSearchIsbn(Collection *col, const char *isbn) {
+    if (col->count <= 0) return NULL;
+
+    // bsearch retorna um ponteiro para o elemento encontrado no array refs.
+    // Como refs é um array de BookData*, o retorno é um BookData**
+    BookData **res = bsearch(isbn, col->refs, col->count, sizeof(BookData *), compareKeyWithIsbn);
+
+    if (res == NULL) return NULL;
+    return *res; // Retorna o ponteiro para o livro
+}
