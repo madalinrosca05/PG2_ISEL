@@ -13,11 +13,22 @@ static int compareBooksByTitle(const void *a, const void *b) {
     return strcmp_ic(bookA->title, bookB->title);
 }
 
-// 4.1. Função para ordenar a coleção de livros por título
-void collSortTitle(Collection *col) {
-    if (col->count > 0) {
-        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
-    }
+// Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
+static int compareByIsbn(const void *a, const void *b) {
+    // Como qsort passa ponteiros para os elementos do array, 
+    // e o array contém (BookData *), 'a' e 'b' são (BookData **)
+    const BookData *bookA = *(const BookData **)a;
+    const BookData *bookB = *(const BookData **)b;
+    
+    return strcmp(bookA->isbn, bookB->isbn);
+}
+
+// Função de comparação para o bsearch
+// O primeiro argumento é a chave (string ISBN), o segundo é um elemento do array refs (BookData**)
+static int compareKeyWithIsbn(const void *key, const void *element) {
+    const char *isbnKey = (const char *)key;
+    const BookData *book = *(const BookData **)element;
+    return strcmp(isbnKey, book->isbn);
 }
 
 int fillBookData(BookData *b, const char *line) {
@@ -51,7 +62,6 @@ int fillBookData(BookData *b, const char *line) {
     return 1;
 }
 
-
 int collAddBook(const char *line, void *context) {
     Collection *col = (Collection *)context;
 
@@ -67,37 +77,24 @@ int collAddBook(const char *line, void *context) {
     return 0;
 }
 
-//---------- adicionado no ex5
-
-void listBooks(Collection *col, void *param) {
-    collSortTitle(col);
-    if (param = NULL)
-    {
-        for (int i = 0; i < col->count; i++) {
-            BookData *b = &col->books[i];
-            printf("%s; %s; %s; %s\n", 
-            b->title, b->authors, b->publisher, b->isbn);
-        }
+// Função para ordenar a coleção de livros por título
+void collSortTitle(Collection *col) {
+    if (col->count > 0) {
+        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
     }
-    if (param = char *)
-    {
-        /* code */
-    }
-    
 }
 
-// Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
-static int compareByIsbn(const void *a, const void *b) {
-    // Como qsort passa ponteiros para os elementos do array, 
-    // e o array contém (BookData *), 'a' e 'b' são (BookData **)
-    const BookData *bookA = *(const BookData **)a;
-    const BookData *bookB = *(const BookData **)b;
-    
-    return strcmp(bookA->isbn, bookB->isbn);
+void listBooks(Collection *col) {
+    for (int i = 0; i < col->count; i++) {
+        BookData *b = &col->books[i];
+        printf("%s; %s; %s; %s\n", 
+               b->title, b->authors, b->publisher, b->isbn);
+    }
 }
 
 void collSortRefIsbn(Collection *col) {
     if (col->count <= 0) return;
+
     // 1. Inicializar o array de referências
     // Cada posição i de 'refs' aponta para a posição i de 'books'
     for (int i = 0; i < col->count; i++) {
@@ -108,22 +105,32 @@ void collSortRefIsbn(Collection *col) {
     // Note que o tamanho de cada elemento é sizeof(BookData *)
     qsort(col->refs, col->count, sizeof(BookData *), compareByIsbn);
 }
-/*
-verifica se a palavra indicada por word existe, como palavra isolada, no campo de autores do livro
-indicado por b. Em caso afirmativo, retorna 1; se não, retorna 0.
-*/
-int bookContainsAuthor( BookData *b, const char *word ){
-    char auth[MAX_AUTHORS];
-    strcpy(auth, b->authors);
 
-    char* tok;
-    char *divide = ';,.\\ \t';
-    tok = strtok(auth, divide);
-    int output;
-    while (tok != NULL)
-    {
-        if (strcmp_ic(tok,word)==0){return 1;}
-        tok = strtok(NULL, divide);
+BookData* collSearchIsbn(Collection *col, const char *isbn) {
+    if (col->count <= 0) return NULL;
+
+    // bsearch retorna um ponteiro para o elemento encontrado no array refs.
+    // Como refs é um array de BookData*, o retorno é um BookData**
+    BookData **res = bsearch(isbn, col->refs, col->count, sizeof(BookData *), compareKeyWithIsbn);
+
+    if (res == NULL) return NULL;
+    return *res; // Retorna o ponteiro para o livro
+}
+
+int bookContainsAuthor(BookData *b, const char *word) {
+    char auth_copy[MAX_AUTHORS];
+    // Usamos strncpy para segurança e trabalhamos sobre uma cópia para o strtok não destruir o original
+    strncpy(auth_copy, b->authors, MAX_AUTHORS - 1);
+    auth_copy[MAX_AUTHORS - 1] = '\0';
+
+    const char *delimiters = " ,;.\t\n";
+    char *tok = strtok(auth_copy, delimiters);
+
+    while (tok != NULL) {
+        if (strcmp_ic(tok, word) == 0) {
+            return 1; 
+        }
+        tok = strtok(NULL, delimiters);
     }
-    return 0;
+    return 0; 
 }

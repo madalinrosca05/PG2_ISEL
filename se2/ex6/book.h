@@ -22,11 +22,13 @@ typedef struct {
     int count; 
 } Collection;
 
-void collSortTitle (Collection *col);
+
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
 
+void collSortTitle (Collection *col);
 void listBooks(Collection *col);
 void collSortRefIsbn(Collection *col);
-int bookContainsAuthor( BookData *b, const char *word );
+BookData* collSearchIsbn(Collection *col, const char *isbn);
+int bookContainsAuthor(BookData *b, const char *word);
 #endif
