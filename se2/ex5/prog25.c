@@ -12,6 +12,9 @@ int main(int argc, char *argv[]) {
     if (processFile(argv[1], collAddBook, &col) < 0) {
         fatal_error("Erro ao processar ficheiro.\n");
     }
+    
+    // Ordena a base de dados principal por título
+    collSortTitle(&col);
 
     // Prepara o índice por ISBN logo no início (como pedido no 5.1)
     collSortRefIsbn(&col);

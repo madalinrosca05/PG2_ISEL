@@ -13,11 +13,22 @@ static int compareBooksByTitle(const void *a, const void *b) {
     return strcmp_ic(bookA->title, bookB->title);
 }
 
-// 4.1. Função para ordenar a coleção de livros por título
-void collSortTitle(Collection *col) {
-    if (col->count > 0) {
-        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
-    }
+// Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
+static int compareByIsbn(const void *a, const void *b) {
+    // Como qsort passa ponteiros para os elementos do array, 
+    // e o array contém (BookData *), 'a' e 'b' são (BookData **)
+    const BookData *bookA = *(const BookData **)a;
+    const BookData *bookB = *(const BookData **)b;
+    
+    return strcmp(bookA->isbn, bookB->isbn);
+}
+
+// Função de comparação para o bsearch
+// O primeiro argumento é a chave (string ISBN), o segundo é um elemento do array refs (BookData**)
+static int compareKeyWithIsbn(const void *key, const void *element) {
+    const char *isbnKey = (const char *)key;
+    const BookData *book = *(const BookData **)element;
+    return strcmp(isbnKey, book->isbn);
 }
 
 int fillBookData(BookData *b, const char *line) {
@@ -51,7 +62,6 @@ int fillBookData(BookData *b, const char *line) {
     return 1;
 }
 
-
 int collAddBook(const char *line, void *context) {
     Collection *col = (Collection *)context;
 
@@ -67,25 +77,19 @@ int collAddBook(const char *line, void *context) {
     return 0;
 }
 
-//---------- adicionado no ex5
+// Função para ordenar a coleção de livros por título
+void collSortTitle(Collection *col) {
+    if (col->count > 0) {
+        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
+    }
+}
 
-void listBooks(Collection *col) { //--- falta adicionar para mostrar quando uso o comando 'i'
-    collSortTitle(col); 
+void listBooks(Collection *col) {
     for (int i = 0; i < col->count; i++) {
         BookData *b = &col->books[i];
         printf("%s; %s; %s; %s\n", 
                b->title, b->authors, b->publisher, b->isbn);
     }
-}
-
-// Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
-static int compareByIsbn(const void *a, const void *b) {
-    // Como qsort passa ponteiros para os elementos do array, 
-    // e o array contém (BookData *), 'a' e 'b' são (BookData **)
-    const BookData *bookA = *(const BookData **)a;
-    const BookData *bookB = *(const BookData **)b;
-    
-    return strcmp(bookA->isbn, bookB->isbn);
 }
 
 void collSortRefIsbn(Collection *col) {
@@ -100,14 +104,6 @@ void collSortRefIsbn(Collection *col) {
     // 2. Ordenar o array de ponteiros 'refs' por ISBN
     // Note que o tamanho de cada elemento é sizeof(BookData *)
     qsort(col->refs, col->count, sizeof(BookData *), compareByIsbn);
-}
-
-// Função de comparação para o bsearch
-// O primeiro argumento é a chave (string ISBN), o segundo é um elemento do array refs (BookData**)
-static int compareKeyWithIsbn(const void *key, const void *element) {
-    const char *isbnKey = (const char *)key;
-    const BookData *book = *(const BookData **)element;
-    return strcmp(isbnKey, book->isbn);
 }
 
 BookData* collSearchIsbn(Collection *col, const char *isbn) {
