@@ -69,13 +69,21 @@ int collAddBook(const char *line, void *context) {
 
 //---------- adicionado no ex5
 
-void listBooks(Collection *col) { //--- falta adicionar para mostrar quando uso o comando 'i'
-    collSortTitle(col); 
-    for (int i = 0; i < col->count; i++) {
-        BookData *b = &col->books[i];
-        printf("%s; %s; %s; %s\n", 
-               b->title, b->authors, b->publisher, b->isbn);
+void listBooks(Collection *col, void *param) {
+    collSortTitle(col);
+    if (param = NULL)
+    {
+        for (int i = 0; i < col->count; i++) {
+            BookData *b = &col->books[i];
+            printf("%s; %s; %s; %s\n", 
+            b->title, b->authors, b->publisher, b->isbn);
+        }
     }
+    if (param = char *)
+    {
+        /* code */
+    }
+    
 }
 
 // Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
@@ -90,7 +98,6 @@ static int compareByIsbn(const void *a, const void *b) {
 
 void collSortRefIsbn(Collection *col) {
     if (col->count <= 0) return;
-
     // 1. Inicializar o array de referências
     // Cada posição i de 'refs' aponta para a posição i de 'books'
     for (int i = 0; i < col->count; i++) {
@@ -100,4 +107,23 @@ void collSortRefIsbn(Collection *col) {
     // 2. Ordenar o array de ponteiros 'refs' por ISBN
     // Note que o tamanho de cada elemento é sizeof(BookData *)
     qsort(col->refs, col->count, sizeof(BookData *), compareByIsbn);
+}
+/*
+verifica se a palavra indicada por word existe, como palavra isolada, no campo de autores do livro
+indicado por b. Em caso afirmativo, retorna 1; se não, retorna 0.
+*/
+int bookContainsAuthor( BookData *b, const char *word ){
+    char auth[MAX_AUTHORS];
+    strcpy(auth, b->authors);
+
+    char* tok;
+    char *divide = ';,.\\ \t';
+    tok = strtok(auth, divide);
+    int output;
+    while (tok != NULL)
+    {
+        if (strcmp_ic(tok,word)==0){return 1;}
+        tok = strtok(NULL, divide);
+    }
+    return 0;
 }
