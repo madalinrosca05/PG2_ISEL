@@ -69,6 +69,15 @@ int collAddBook(const char *line, void *context) {
 
 //---------- adicionado no ex5
 
+void listBooks(Collection *col) {
+    collSortTitle(col); 
+    for (int i = 0; i < col->count; i++) {
+        BookData *b = &col->books[i];
+        printf("%s; %s; %s; %s\n", 
+               b->title, b->authors, b->publisher, b->isbn);
+    }
+}
+
 // Função auxiliar de comparação para ordenar ponteiros de livros por ISBN
 static int compareByIsbn(const void *a, const void *b) {
     // Como qsort passa ponteiros para os elementos do array, 

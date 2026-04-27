@@ -26,4 +26,6 @@ void collSortTitle (Collection *col);
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
 
+void listBooks(Collection *col);
+void collSortRefIsbn(Collection *col);
 #endif
