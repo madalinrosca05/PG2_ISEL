@@ -25,10 +25,8 @@ typedef struct {
 
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
-
 void collSortTitle (Collection *col);
 void listBooks(Collection *col);
 void collSortRefIsbn(Collection *col);
-
 BookData* collSearchIsbn(Collection *col, const char *isbn);
 #endif
