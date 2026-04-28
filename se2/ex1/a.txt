@@ -1,0 +1,6 @@
+Hello, this is the first line.
+This is the second line of the file.
+The processFile function will read this line too.
+4th line: Testing numbers and special characters! @#$%
+Line 5: The maximum line size is 512 characters.
+Final line of the test file.

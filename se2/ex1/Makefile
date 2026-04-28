@@ -16,8 +16,5 @@ errors.o: errors.c
 processFile.o: processFile.c
 	gcc $(CFLAGS) processFile.c
 
-errors.o: errors.c errors.h
-	gcc -Wall -c errors.c
-
 clean:
 	rm prog21 *.o
