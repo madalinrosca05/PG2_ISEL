@@ -2,7 +2,11 @@
 #include <string.h>
 #include "errors.h"
 
-    //printf retorna o numero de caracteres, entao, se der print a alguma coisa(printf > 0)
-int linePrintRaw( const char *line, void *context ){  // retorna a logica da comparação, que é sempre 0 ou 1
+// Função simples que imprime a linha tal como ela vem do ficheiro.
+int linePrintRaw( const char *line, void *context ){
+    /* O printf retorna o número de caracteres impressos. 
+       Se for maior que 0, significa que a linha foi impressa com sucesso, 
+       então retorno 1 (true) para o contador do processFile.
+    */
     return (printf("%s", line) > 0); 
 }

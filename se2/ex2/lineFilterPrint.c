@@ -7,25 +7,29 @@
 
 #define MAX_LINE_SIZE 512
 
+// Verifica se o primeiro campo da linha coincide com o 'target' passado no contexto.
 int lineFilterPrint(const char *line, void *context) {
     char line_copy[MAX_LINE_SIZE];
-    char *fields[1]; // Só precisamos do primeiro campo
+    char *fields[1]; // // Só preciso do primeiro campo para comparar
     const char *target = (const char *)context;
 
-    // Criar uma cópia porque splitFields e separatorUnify modificam a string
+    /* Crio uma cópia da linha porque as funções splitFields e separatorUnify 
+       são destrutivas (alteram a string). Se mudasse a 'line' original, 
+       depois não conseguia imprimir a linha correta no printf final.
+    */
     strncpy(line_copy, line, MAX_LINE_SIZE - 1);
     line_copy[MAX_LINE_SIZE - 1] = '\0';
 
-    // Separar os campos (o primeiro campo começa no início de line_copy)
+    // Extraio apenas o início da linha (até ao primeiro ';')
     int n_fields = splitFields(line_copy, fields, 1);
 
     if (n_fields > 0) {
-        // Uniformizar o primeiro campo extraído
+        // Limpo espaços extra do campo extraído para a comparação ser justa
         separatorUnify(fields[0]);
 
-        // Comparar com o critério (context) de forma case-insensitive
+        // Comparação case-insensitive para o filtro ser mais flexível
         if (strcmp_ic(fields[0], target) == 0) {
-            // Se coincidir, imprimir a linha ORIGINAL e retornar 1
+            // Se houver match, imprimo a linha ORIGINAL (com todos os campos e sem cortes)
             printf("%s", line);
             return 1;
         }
