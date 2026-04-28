@@ -12,7 +12,6 @@ void separatorUnify(char str[]) {
 
     while (str[i] != '\0') {
 
-        // verifica se o carácter atual é um separador
         if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n') {
 
             // só escreve um espaço se não estiver já em sequência de espaços
@@ -22,9 +21,9 @@ void separatorUnify(char str[]) {
             }
 
         } else {
-            // se for um carácter "normal" (letra, número, etc.)
-            str[j++] = str[i];   // copia para a nova posição
-            inSpace = 0;         // indica que já não estamos em espaço
+            // se for um carácter "normal" (letra, número, etc.) copia para a nova pos/ indica que não temos espaço
+            str[j++] = str[i]; 
+            inSpace = 0;       
         }
 
         i++;

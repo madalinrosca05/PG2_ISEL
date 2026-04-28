@@ -13,6 +13,13 @@ static int compareBooksByTitle(const void *a, const void *b) {
     return strcmp_ic(bookA->title, bookB->title);
 }
 
+// 4.1. Função para ordenar a coleção de livros por título
+void collSortTitle(Collection *col) {
+    if (col->count > 0) {
+        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
+    }
+}
+
 int fillBookData(BookData *b, const char *line) {
     char line_copy[1024]; // Buffer suficiente para a linha completa
     char *fields[10];     // O ficheiro tem 10 campos
@@ -44,6 +51,7 @@ int fillBookData(BookData *b, const char *line) {
     return 1;
 }
 
+
 int collAddBook(const char *line, void *context) {
     Collection *col = (Collection *)context;
 
@@ -57,11 +65,4 @@ int collAddBook(const char *line, void *context) {
     }
 
     return 0;
-}
-
-// 4.1. Função para ordenar a coleção de livros por título
-void collSortTitle(Collection *col) {
-    if (col->count > 0) {
-        qsort(col->books, col->count, sizeof(BookData), compareBooksByTitle);
-    }
 }
