@@ -4,19 +4,20 @@
 #include "splitFields.h"
 #include "separator_unify.h"
 
-// 3.2. Preencher a estrutura com os dados da linha
+// Lê uma linha do CSV, divide-a em campos e preenche a estrutura do livro.
 int fillBookData(BookData *b, const char *line) {
     char line_copy[1024]; // Buffer suficiente para a linha completa
     char *fields[10];     // O ficheiro tem 10 campos
     
+    // Uso uma cópia porque o splitFields altera a string original com '\0'
     strncpy(line_copy, line, sizeof(line_copy) - 1);
     line_copy[sizeof(line_copy) - 1] = '\0';
 
-    // Dividir a linha em campos utilizando a splitFields
+    // Divide a linha em campos utilizando a splitFields
     int n = splitFields(line_copy, fields, 10);
     if (n < 5) return 0; // Erro se não houver campos suficientes
 
-    // Copiar e uniformizar os campos relevantes (Título, ISBN, Autores, Editora)
+    // Para cada campo, uniformizo os espaços e limito o tamanho para não ultrapassar os limites. 
     separatorUnify(fields[0]);
     strncpy(b->title, fields[0], MAX_TITLE - 1);
     b->title[MAX_TITLE - 1] = '\0';
@@ -36,14 +37,12 @@ int fillBookData(BookData *b, const char *line) {
     return 1;
 }
 
-// 3.3. Adicionar um livro à coleção usando a função collAddBook
+// Função usada no processFile. Adiciona um livro à coleção.
 int collAddBook(const char *line, void *context) {
     Collection *col = (Collection *)context;
 
-    // Verificar se há espaço na coleção
     if (col->count >= MAX_BOOKS) return 0;
 
-    // Preencher os dados do livro e adicionar à coleção
     if (fillBookData(&(col->books[col->count]), line)) {
         col->count++;
         return 1;

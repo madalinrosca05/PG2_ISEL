@@ -1,5 +1,6 @@
 #include "separator_unify.h"
 
+// Remove espaços/tabs repetidos e espaços nas extremidades, deixando apenas um espaço entre palavras.
 void separatorUnify(char str[]) {
     /*
         "i" é a posição atual de leitura na string original, 
@@ -12,25 +13,25 @@ void separatorUnify(char str[]) {
 
     while (str[i] != '\0') {
 
-        // verifica se o carácter atual é um separador
+        // Verifica se o carácter atual é um separador
         if (str[i] == ' ' || str[i] == '\t' || str[i] == '\n') {
 
-            // só escreve um espaço se não estiver já em sequência de espaços
+            // Só escreve um espaço se não estiver já em sequência de espaços
             if (!inSpace) {
                 str[j++] = ' ';
-                inSpace = 1; // indica que agora estamos em espaço
+                inSpace = 1; // Indica que agora estamos em espaço
             }
 
         } else {
-            // se for um carácter "normal" (letra, número, etc.)
-            str[j++] = str[i];   // copia para a nova posição
-            inSpace = 0;         // indica que já não estamos em espaço
+            // Se for um carácter "normal" (letra, número, etc.)
+            str[j++] = str[i];   // Copia para a nova posição
+            inSpace = 0;         // Indica que já não estamos em espaço
         }
 
         i++;
     }
 
-    // se o último carácter escrito for espaço, remove-o
+    // Se a string terminou com um espaço extra, recuamos o cursor para o eliminar
     if (j > 0 && str[j - 1] == ' ') {
         j--;
     }

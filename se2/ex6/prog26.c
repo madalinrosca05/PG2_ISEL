@@ -10,11 +10,12 @@ int main(int argc, char *argv[]) {
     }
 
     Collection col = { .count = 0 };
+    // Carrega os dados do ficheiro para a memória
     if (processFile(argv[1], collAddBook, &col) < 0) {
         fatal_error("Erro ao processar ficheiro.\n");
     }
     
-    // Ordenações iniciais necessárias
+    // Organiza logo a coleção para as pesquisas e listagens futuras
     collSortTitle(&col);
     collSortRefIsbn(&col);
 
@@ -22,6 +23,7 @@ int main(int argc, char *argv[]) {
     char search_buffer[128]; // Para ISBN ou nome de autor
 
     printf("> ");
+    // Loop principal de comandos
     while (scanf(" %c", &command) == 1 && command != 'q') {
         switch (command) {
             case 'l':
@@ -42,12 +44,12 @@ int main(int argc, char *argv[]) {
 
             case 'a':
                 if (scanf("%s", search_buffer) == 1) {
-                    // Percorre os dados na ordem alfabética de título
+                    // Como o array principal já está ordenado por título (no collSortTitle),
+                    // basta percorrer linearmente para apresentar por ordem alfabética
                     for (int i = 0; i < col.count; i++) {
                         if (bookContainsAuthor(&col.books[i], search_buffer)) {
                             BookData *b = &col.books[i];
-                            printf("%s; %s; %s; %s\n", 
-                                   b->title, b->authors, b->publisher, b->isbn);
+                            printf("%s; %s; %s; %s\n", b->title, b->authors, b->publisher, b->isbn);
                         }
                     }
                 }
@@ -55,6 +57,7 @@ int main(int argc, char *argv[]) {
 
             default:
                 printf("Comando desconhecido: %c\n", command);
+                // Limpa o buffer do teclado para evitar loops infinitos em caso de erro
                 while (getchar() != '\n'); 
                 break;
         }

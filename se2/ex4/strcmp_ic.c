@@ -14,7 +14,6 @@
 
 int strcmp_ic(const char *str1, const char *str2) {
 
-
     while (*str1 != '\0' && tolower((unsigned char) *str1) == tolower((unsigned char) *str2)) { 
         str1++;
         str2++;

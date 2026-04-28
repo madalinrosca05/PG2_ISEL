@@ -1,11 +1,11 @@
 CFLAGS = -Wall -g -c
 LDFLAGS = -Wall -o
 
-prog25: prog26.o book.o processFile.o errors.o splitFields.o separator_unify.o strcmp_ic.o
+prog26: prog26.o book.o processFile.o errors.o splitFields.o separator_unify.o strcmp_ic.o
 	gcc $(LDFLAGS) prog26 prog26.o book.o processFile.o errors.o splitFields.o separator_unify.o strcmp_ic.o
 
-prog25.o: prog26.c book.h processFile.h errors.h
-	gcc $(CFLAGS) prog25.c
+prog26.o: prog26.c book.h processFile.h errors.h
+	gcc $(CFLAGS) prog26.c
 
 book.o: book.c book.h splitFields.h separator_unify.h strcmp_ic.h
 	gcc $(CFLAGS) book.c

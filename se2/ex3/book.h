@@ -1,7 +1,7 @@
 #ifndef BOOK_H
 #define BOOK_H
 
-// 3.1. Dimensões baseadas na análise de dados.csv
+// Defini as dimensões com uma margem de segurança baseada no ficheiro dados.csv
 #define MAX_BOOKS     350   // Superior às 296 linhas (livros) contadas
 #define MAX_TITLE     256   // Superior aos 200 carateres do título mais longo
 #define SIZE_ISBN     20    // Superior aos 10 carateres
@@ -16,12 +16,12 @@ typedef struct book {
 } BookData;
 
 typedef struct {
-    BookData books[MAX_BOOKS];
-    BookData *refs[MAX_BOOKS]; 
+    BookData books[MAX_BOOKS]; // Array com os dados reais
+    BookData *refs[MAX_BOOKS]; // Array de ponteiros para ordenação/pesquisa por ISBN
     int count; 
 } Collection;
 
+// Protótipos das funções públicas
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
-
 #endif
