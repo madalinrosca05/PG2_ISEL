@@ -1,0 +1,12 @@
+Dune;1;1;Frank H;Chilton;SciFi;400;1965;PB;10
+Hobbit;2;2;Tolkien;HM;Fantasy;300;1937;HC;15
+1984;3;3;Orwell;Secker;Distop;300;1949;PB;9
+Java;4;4;Gosling;Sun;Code;500;1995;PB;20
+C;5;5;KR;PH;Code;200;1978;PB;30
+Python;6;6;GVR;Manning;Code;400;1991;PB;25
+ISEL;7;7;Prof;ISEL;School;100;2025;DI;5
+Dune;8;8;Frank H;Chilton;SciFi;400;1965;HC;12
+ISEL;9;9;Student;ISEL;Project;50;2026;DI;0
+Test;10;10;User;Home;None;10;2024;PB;1
+  ISEL  ;11;11;Extra;ISEL;Space;20;2025;PB;2
+isel;12;12;Lower;ISEL;Case;30;2025;PB;3

@@ -22,8 +22,11 @@ typedef struct {
     int count; 
 } Collection;
 
+<<<<<<< HEAD
 // Protótipos das funções públicas
+=======
+void collSortTitle (Collection *col);
+>>>>>>> e242d5db1006860ff56d224d7693354097149816
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
-void collSortTitle (Collection *col);
 #endif
