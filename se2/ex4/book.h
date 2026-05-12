@@ -25,4 +25,6 @@ typedef struct {
 // Protótipos das funções públicas
 int fillBookData(BookData *b, const char *line);
 int collAddBook(const char *line, void *context);
+void collSortTitle (Collection *col);
+
 #endif
